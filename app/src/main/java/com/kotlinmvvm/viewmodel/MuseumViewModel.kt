@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kotlinmvvm.data.OperationCallback
+import com.kotlinmvvm.mapper.toMuseumList
+import com.kotlinmvvm.model.ClevelandArtwork
+import com.kotlinmvvm.model.ClevelandResponse
 import com.kotlinmvvm.model.Museum
 import com.kotlinmvvm.model.MuseumRepository
 
@@ -33,19 +36,19 @@ class MuseumViewModel(private val repository: MuseumRepository) : ViewModel() {
 
     fun loadMuseums() {
         _isViewLoading.value = true
-        repository.fetchMuseums(object : OperationCallback<Museum> {
+        repository.fetchMuseums(object : OperationCallback<ClevelandArtwork> {
             override fun onError(error: String?) {
                 _isViewLoading.value = false
                 _onMessageError.value = error
             }
 
-            override fun onSuccess(data: List<Museum>?) {
+            override fun onSuccess(data: List<ClevelandArtwork>?) {
                 _isViewLoading.value = false
                 if (data.isNullOrEmpty()) {
                     _isEmptyList.value = true
 
                 } else {
-                    _museums.value = data
+                    _museums.value = data.toMuseumList()
                 }
             }
         })

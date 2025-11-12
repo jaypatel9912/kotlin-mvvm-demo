@@ -6,6 +6,6 @@ import com.kotlinmvvm.model.Museum
 
 interface MuseumDataSource {
 
-    fun retrieveMuseums(callback: OperationCallback<Museum>)
+    fun retrieveMuseums(callback: OperationCallback<ClevelandArtwork>)
     fun cancel()
 }

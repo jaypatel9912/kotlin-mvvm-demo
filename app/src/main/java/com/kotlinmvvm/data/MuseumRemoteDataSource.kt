@@ -1,6 +1,7 @@
 package com.kotlinmvvm.data
 
-import com.kotlinmvvm.model.Museum
+import com.kotlinmvvm.model.ClevelandArtwork
+import com.kotlinmvvm.model.ClevelandResponse
 import com.kotlinmvvm.model.MuseumDataSource
 import retrofit2.Call
 import retrofit2.Callback
@@ -9,26 +10,26 @@ import retrofit2.Response
 
 class MuseumRemoteDataSource(apiClient: ApiClient) : MuseumDataSource {
 
-    private var call: Call<MuseumResponse>? = null
+    private var call: Call<ClevelandResponse>? = null
     private val service = apiClient.build()
 
-    override fun retrieveMuseums(callback: OperationCallback<Museum>) {
+    override fun retrieveMuseums(callback: OperationCallback<ClevelandArtwork>) {
 
-        call = service?.museums()
-        call?.enqueue(object : Callback<MuseumResponse> {
-            override fun onFailure(call: Call<MuseumResponse>, t: Throwable) {
+        call = service?.getArtworks()
+        call?.enqueue(object : Callback<ClevelandResponse> {
+            override fun onFailure(call: Call<ClevelandResponse>, t: Throwable) {
                 callback.onError(t.message)
             }
 
             override fun onResponse(
-                call: Call<MuseumResponse>,
-                response: Response<MuseumResponse>
+                call: Call<ClevelandResponse>,
+                response: Response<ClevelandResponse>
             ) {
                 response.body()?.let {
-                    if (response.isSuccessful && (it.isSuccess())) {
+                    if (response.isSuccessful) {
                         callback.onSuccess(it.data)
                     } else {
-                        callback.onError(it.msg)
+                        callback.onError("Unkonwn error")
                     }
                 }
             }

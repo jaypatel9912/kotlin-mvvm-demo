@@ -1,24 +1,26 @@
 package com.kotlinmvvm.view
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.kotlinmvvm.R
+import com.kotlinmvvm.databinding.RowMuseumBinding
 import com.kotlinmvvm.model.Museum
-import kotlinx.android.synthetic.main.row_museum.view.*
 
 
 class MuseumAdapter(private var museums: List<Museum>) :
     RecyclerView.Adapter<MuseumAdapter.MViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): MViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.row_museum, parent, false)
-        return MViewHolder(view)
+        // Inflate the layout using DataBindingUtil
+        val binding: RowMuseumBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            R.layout.row_museum,
+            parent,
+            false
+        )
+        return MViewHolder(binding)
     }
 
     override fun onBindViewHolder(vh: MViewHolder, position: Int) {
@@ -34,12 +36,12 @@ class MuseumAdapter(private var museums: List<Museum>) :
         notifyDataSetChanged()
     }
 
-    class MViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val textViewName: TextView = view.textViewName
-        private val imageView: ImageView = view.imageView
+    class MViewHolder(private val binding: RowMuseumBinding) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(museum: Museum) {
-            textViewName.text = museum.name.capitalize()
-            Glide.with(imageView.context).load(museum.photo).into(imageView)
+            binding.museum = museum
+            binding.executePendingBindings()
         }
     }
+
 }

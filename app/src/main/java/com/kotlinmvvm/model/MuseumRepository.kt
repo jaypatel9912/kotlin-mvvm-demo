@@ -7,7 +7,7 @@ import com.kotlinmvvm.model.MuseumDataSource
 
 class MuseumRepository(private val museumDataSource: MuseumDataSource) {
 
-    fun fetchMuseums(callback: OperationCallback<Museum>) {
+    fun fetchMuseums(callback: OperationCallback<ClevelandArtwork>) {
         museumDataSource.retrieveMuseums(callback)
     }
 
